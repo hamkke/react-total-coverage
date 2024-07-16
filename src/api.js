@@ -1,19 +1,27 @@
 const BASE_URL = 'https://movies-api.nomadcoders.workers.dev';
 
-export function getPopular() {
-  return fetch(`${BASE_URL}/popular`).then((r) => r.json());
+export const getPopular = async () => {
+  const r = await fetch(`${BASE_URL}/popular`);
+  const json = await r.json();
+  return json;
+};
+
+export async function getNowPlaying() {
+  const r = await fetch(`${BASE_URL}/now-playing`);
+  const json = await r.json();
+  return json;
 }
 
-export function getNowPlaying() {
-  return fetch(`${BASE_URL}/now-playing`).then((r) => r.json());
+export async function getComingSoon() {
+  const r = await fetch(`${BASE_URL}/coming-soon`);
+  const json = await r.json();
+  return json;
 }
 
-export function getComingSoon() {
-  return fetch(`${BASE_URL}/coming-soon`).then((r) => r.json());
-}
-
-export function getMovie(id) {
-  return fetch(`${BASE_URL}/movie?id=${id}`).then((r) => r.json());
+export async function getMovie(id) {
+  const r = await fetch(`${BASE_URL}/movie?id=${id}`);
+  const json = await r.json();
+  return json;
 }
 
 export function makeImagePath(image) {
