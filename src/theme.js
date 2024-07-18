@@ -7,7 +7,7 @@ export const darkTheme = {
 
 export const lightTheme = {
   bgColor: '#4EDB75',
-  textColor: '#2B2B2B',
+  textColor: '#79cd7c',
   accentColor: '#E66EB2',
   cardBgColor: 'white',
 };

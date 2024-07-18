@@ -1,8 +1,9 @@
 import { Outlet } from 'react-router-dom';
 import MovieCard from '../component/MovieCard';
 import { useQuery } from '@tanstack/react-query';
-
 import { getComingSoon } from '../api';
+import { Container } from '../styles/common';
+import { containerVariants } from '../commonVariants';
 
 const ComingSoon = () => {
   const { data, isLoading } = useQuery({
@@ -11,22 +12,22 @@ const ComingSoon = () => {
   });
 
   const { results } = data || {};
-  return (
-    <div>
-      {!isLoading &&
-        results.map((item, idx) => {
-          return (
-            <MovieCard
-              key={`${item.id}-${idx}`}
-              id={item.id}
-              title={item.title}
-              imgPath={item.poster_path}
-            />
-          );
-        })}
+  return isLoading ? null : (
+    <Container variants={containerVariants} initial='hidden' animate='visible'>
+      {results.map((item) => {
+        return (
+          <MovieCard
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            imgPath={item.poster_path}
+            layoutId={item.id}
+          />
+        );
+      })}
 
       <Outlet />
-    </div>
+    </Container>
   );
 };
 export default ComingSoon;
