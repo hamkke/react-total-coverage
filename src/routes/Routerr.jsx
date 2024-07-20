@@ -3,7 +3,7 @@ import App from '../App';
 import Popular from './Popular';
 import ComingSoon from './ComingSoon';
 import NowPlaying from './NowPlaying';
-import Detail from './Detail';
+import DetailCard from './DetailCard';
 
 const Router = createBrowserRouter([
   {
@@ -16,7 +16,7 @@ const Router = createBrowserRouter([
         children: [
           {
             path: ':movieId',
-            element: <Detail />,
+            element: <DetailCard />,
           },
         ],
       },
@@ -26,7 +26,7 @@ const Router = createBrowserRouter([
         children: [
           {
             path: ':movieId',
-            element: <Detail />,
+            element: <DetailCard />,
           },
         ],
       },
@@ -35,8 +35,8 @@ const Router = createBrowserRouter([
         element: <NowPlaying />,
         children: [
           {
-            path: ':id',
-            element: <Detail />,
+            path: ':movieId',
+            element: <DetailCard />,
           },
         ],
       },

@@ -18,11 +18,11 @@ export async function getComingSoon() {
   return json;
 }
 
-export async function getMovie(id) {
+export const getMovie = async (id) => {
   const r = await fetch(`${BASE_URL}/movie?id=${id}`);
   const json = await r.json();
   return json;
-}
+};
 
 export function makeImagePath(image) {
   return `https://image.tmdb.org/t/p/w500${image}`;

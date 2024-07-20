@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 export const Container = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
   padding: 30px;
-  width: 50vw;
+  width: 60vw;
 `;

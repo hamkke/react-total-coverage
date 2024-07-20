@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { scrollATOM } from '../atom';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { Link, useMatch } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
-import DetailCard from './DetailCard';
+import DetailCard from '../routes/DetailCard';
 import { makeImagePath } from '../api';
 
 const Container = styled(motion.div)`
@@ -31,21 +31,24 @@ const itemVariants = {
   },
 };
 const MovieCard = ({ id, title, imgPath }) => {
-  const [aniId, setAniId] = useState(null);
+  const [movieId, setMovieId] = useState(null);
   const scrollRef = useRecoilValue(scrollATOM);
   const changedPath = makeImagePath(imgPath);
 
   const handleModal = () => {
-    setAniId(id);
+    setMovieId(id);
     scrollRef.current.offsetParent.style.overflowY = 'hidden';
   };
 
+  // console.log(id);
   return (
     <>
       <Container
+        whileHover={{
+          scale: 1.1,
+          transition: { duration: 0.3 },
+        }}
         onClick={handleModal}
-        className='qwe'
-        // transition={{ duration: 0.3 }}
         layoutId={id}
         variants={itemVariants}
       >
@@ -54,8 +57,15 @@ const MovieCard = ({ id, title, imgPath }) => {
           <Title>{title}</Title>
         </Link>
       </Container>
-
-      <DetailCard setAniId={setAniId} aniId={aniId} />
+      {/* 
+      <AnimatePresence>
+        <DetailCard
+          setMovieId={setMovieId}
+          movieId={movieId}
+          layoutId={id}
+          match={movieModalMatch}
+        />
+      </AnimatePresence> */}
     </>
   );
 };
