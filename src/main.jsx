@@ -6,7 +6,7 @@ import { RecoilRoot } from 'recoil';
 import { RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Router from './routes/Routerr';
-import { lightTheme } from './theme';
+import { lightTheme } from './styles/theme';
 
 const rootElement = document.getElementById('root');
 const root = ReactDOM.createRoot(rootElement);

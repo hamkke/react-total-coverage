@@ -3,7 +3,7 @@ import { useSetRecoilState } from 'recoil';
 import { scrollATOM } from './atom';
 import { Outlet } from 'react-router-dom';
 import Header from './component/Header';
-import { GlobalStyle } from './GlobalStyle';
+import { GlobalStyle } from './styles/GlobalStyle';
 import styled from 'styled-components';
 
 const Everything = styled.div`

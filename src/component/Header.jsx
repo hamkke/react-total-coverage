@@ -24,14 +24,16 @@ const List = styled.li`
   align-items: center;
   font-size: 30px;
 `;
-const Dot = styled(motion.div)`
+const Indicate = styled(motion.div)`
   position: absolute;
   left: 0;
   right: 0;
   height: 2px;
   background-color: ${(props) => props.theme.textColor};
 `;
+// -------------------------------------------------------
 const TAP = ['popular', 'coming-soon', 'now-playing'];
+// -------------------------------------------------------
 const Header = () => {
   const [selectedTab, setSelectedTab] = useState(TAP[0]);
   return (
@@ -44,8 +46,8 @@ const Header = () => {
                 {item.toUpperCase()}
               </Link>
               {item === selectedTab ? (
-                <Dot
-                  layoutId='Dot'
+                <Indicate
+                  layoutId='indicate'
                   style={
                     item === 'coming-soon'
                       ? { top: '-10px' }

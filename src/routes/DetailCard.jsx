@@ -1,17 +1,11 @@
-import {
-  useNavigate,
-  useLocation,
-  useParams,
-  useOutletContext,
-  useMatch,
-} from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { movieIdATOM, scrollATOM } from '../atom';
-import { AnimatePresence, motion } from 'framer-motion';
-import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
-import { getMovie, makeBgPath, makeImagePath } from '../api';
-import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { scrollATOM } from '../atom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import { AnimatePresence, motion } from 'framer-motion';
+import { getMovie, makeBgPath } from '../api';
+import HOHOHO from '../hohoho.png';
 
 const Ship = styled(motion.div)`
   position: fixed;
@@ -26,15 +20,13 @@ const Ship = styled(motion.div)`
 `;
 
 const Container = styled(motion.div)`
-  position: relative;
-  margin-top: -300px;
-  width: 90%;
-  min-width: 700px;
+  width: 50%;
+  max-width: 700px;
+  min-width: 400px;
 `;
 
 const MoviePoster = styled.div`
-  position: absolute;
-  width: 70%;
+  margin: 20px 0;
   border: 1px solid #000;
   & img {
     display: block;
@@ -42,11 +34,7 @@ const MoviePoster = styled.div`
   }
 `;
 const Information = styled.div`
-  position: absolute;
-  right: -10px;
-  bottom: -70px;
   padding: 10px;
-  width: 350px;
   background-color: #ffffff;
   border: 1px solid #000;
 
@@ -62,9 +50,6 @@ const Information = styled.div`
   }
 `;
 const CloseSVG = styled(motion.svg)`
-  position: absolute;
-  top: -70px;
-  left: 0;
   width: 60px;
   height: 60px;
   stroke-width: 3;
@@ -77,65 +62,56 @@ const DetailCard = ({ layoutId }) => {
   const scrollRef = useRecoilValue(scrollATOM);
   const navigate = useNavigate();
   const location = useLocation();
-  const { data, isFetched } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['movieDetailInfo', layoutId],
     queryFn: () => getMovie(layoutId),
+    // 어떤 조건이 충족될 때만 데이터를 가져오고 싶을 때 유용
     enabled: !!layoutId,
   });
-
-  const handle = () => {
-    // setMovieId(null);
+  const handleBackAndScroll = () => {
     const result = location.pathname.replace(/\/\d+$/, '');
     navigate(result);
     scrollRef.current.offsetParent.style.overflowY = 'scroll';
   };
-  useEffect(() => {
-    console.log(123);
-  }, []);
+  if (!isLoading) null;
   return (
-    <>
-      <AnimatePresence>
-        {isFetched && (
-          <Ship
-            key={layoutId}
-            initial={false}
-            animate={{
-              opacity: 1,
-              transition: { duration: 1 },
-            }}
-            exit={{ opacity: 0 }}
-            onClick={handle}
-          >
-            <Container
-              key={layoutId}
-              layoutId={layoutId}
-              transition={{ duration: 0.3 }}
+    <AnimatePresence>
+      {layoutId && (
+        <Ship
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { delay: 0.3 } }}
+          exit={{ opacity: 0 }}
+          onClick={handleBackAndScroll}
+        >
+          <Container layoutId={layoutId} key={layoutId}>
+            <CloseSVG
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
             >
+              <path d='M6 18 18 6M6 6l12 12' />
+            </CloseSVG>
+            {!isLoading && (
               <MoviePoster>
                 <img
-                  src={makeBgPath(data?.backdrop_path || '')}
+                  onError={HOHOHO}
+                  src={makeBgPath(data?.backdrop_path || HOHOHO)}
                   alt={data?.title}
                 />
               </MoviePoster>
-              <CloseSVG
-                xmlns='http://www.w3.org/2000/svg'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-              >
-                <path d='M6 18 18 6M6 6l12 12' />
-              </CloseSVG>
-              <Information>
-                <h2>✴︎ {data?.title}</h2>
-                <p>✴︎ 개봉 : {data?.release_date}</p>
-                <p>✴︎ 별점 : {Math.round(data?.vote_average)}</p>
-                <p>✴︎ {data?.runtime}분</p>
-                {/* <p>✴︎ {data?.overview.slice(0, 100)}...</p> */}
-              </Information>
-            </Container>
-          </Ship>
-        )}
-      </AnimatePresence>
-    </>
+            )}
+
+            <Information>
+              <h2>✴︎ {data?.title}</h2>
+              <p>✴︎ 개봉 : {data?.release_date}</p>
+              <p>✴︎ 별점 : {Math.round(data?.vote_average)}</p>
+              <p>✴︎ {data?.runtime}분</p>
+              <p>✴︎ {data?.overview.slice(0, 200)}...</p>
+            </Information>
+          </Container>
+        </Ship>
+      )}
+    </AnimatePresence>
   );
 };
 export default DetailCard;
